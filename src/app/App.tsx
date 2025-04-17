@@ -1,5 +1,5 @@
 import React from "react";
-import '../css/app.css';
+
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import { RippleBadge } from "./MaterialTheme/styled";
 import { Link, Route, Switch, useLocation } from "react-router-dom";
@@ -10,6 +10,9 @@ import { UserPage } from "./screens/userPage";
 import { HomeNavbar } from "./components/headers/HomeNavbar";
 import { OtherNavbar } from "./components/headers/OtherNavbar";
 import { Footer } from "./components/footer";
+import '../css/app.css';
+import '../css/navbar.css';
+import { HelpPage } from "./screens/helpPage";
 
 
 function App() {
@@ -19,22 +22,6 @@ function App() {
 
   return (
     <div>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/products" >ProdutsPage</Link>
-          </li>
-          <li>
-            <Link to="/orders" > OrdersPage</Link>
-          </li>
-          <li>
-            <Link to="/member-page" > UserPage</Link>
-          </li>
-          <li>
-            <Link to="/" > HomePage</Link>
-          </li>
-        </ul>
-      </nav>
    {location.pathname === "/" ? <HomeNavbar/> : <OtherNavbar/>}
       <Switch>
         <Route path="/products">
@@ -45,6 +32,9 @@ function App() {
         </Route>
         <Route path="/member-page">
           <UserPage />
+        </Route>
+        <Route path="/help">
+          <HelpPage />
         </Route>
         <Route path="/">
           <HomePage />
