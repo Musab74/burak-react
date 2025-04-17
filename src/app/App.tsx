@@ -13,7 +13,7 @@ import { Footer } from "./components/footer";
 
 
 function App() {
- const location = useLocation();
+ const location = useLocation(); // qaytarishi object
  console.log(location);
  
 
