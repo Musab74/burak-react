@@ -1,80 +1,52 @@
-// import React from "react";
-// import { Box, Container, Stack } from "@mui/material";
-// import Card from "@mui/joy/Card";
-// import { CssVarsProvider, Typography } from "@mui/joy";
-// import CardOverflow from "@mui/joy/CardOverflow";
-// import AspectRatio from "@mui/joy/AspectRatio";
+import React from "react";
+import { Box, Container, Stack } from "@mui/material";
+import Card from "@mui/joy/Card";
+import { CssVarsProvider, Typography } from "@mui/joy";
+import CardOverflow from "@mui/joy/CardOverflow";
+import AspectRatio from "@mui/joy/AspectRatio";
 
-// const activeUsers = [
-//     { memberNick: "Justin", memberImage: "/img/justin.webp" },
-//     { memberNick: "Rose", memberImage: "/img/rose.webp" },
-//     { memberNick: "Nusret", memberImage: "/img/nusret.webp" },
-//     { memberNick: "Martin", memberImage: "/img/martin.webp" },
-//   ];
-  
-//   export default function ActiveUsers() {
-//     return (
-//       <div className="active-users-frame">
-//         <Container>
-//           <Stack className="main">
-//             <Box className="category-title">Active User</Box>
-//             <Stack className="card-framee">
-//             <CssVarsProvider>
-//                                     <Card className="card">
-//                                         <CardCover>
-//                                             <img src={ele.imagePath} alt={ele.productName} />
-//                                             <CardCover className="card-cover" />
-//                                         </CardCover>
+const activeUsers = [
+    { memberNick: "Justin", memberImage: "/img/justin.webp" },
+    { memberNick: "Rose", memberImage: "/img/rose.webp" },
+    { memberNick: "Nusret", memberImage: "/img/nusret.webp" },
+    { memberNick: "Martin", memberImage: "/img/martin.webp" },
+];
 
-//                                         <CardContent sx={{ justifyContent: "flex-end" }}>
-//                                             <Stack
-//                                                 flexDirection={"row"}
-//                                                 justifyContent={"space-between"}
-//                                             >
-//                                                 <Typography
-//                                                     level="h2"
-//                                                     fontSize="lg"
-//                                                     textColor="#fff"
-//                                                     mb={1}
-//                                                 >
-//                                                     {ele.productName}
-//                                                 </Typography>
-//                                                 <Typography
-//                                                     sx={{
-//                                                         fontWeight: "md",
-//                                                         color: "neutral.300",
-//                                                         alignItems: "center",
-//                                                         display: "flex",
-//                                                     }}
-//                                                 >
-//                                                     20
-//                                                     <VisibilityIcon
-//                                                         sx={{
-//                                                             fontSize: 25,
-//                                                             marginLeft: "5px"
-//                                                         }}
-//                                                     />
-//                                                 </Typography>
-//                                             </Stack>
-//                                         </CardContent>
-
-//                                         <CardOverflow
-//                                             sx={{
-//                                                 display: "flex",
-//                                                 gap: 1.5,
-//                                                 px: 1.5,
-//                                                 py: "var(--Card-padding)",
-//                                                 borderTop: "1px solid",
-//                                                 height: "60px",
-//                                             }}
-//                                         >
-//                                             <Typography
-//                                                 startDecorator={<DescriptionOutlinedIcon />}
-//                                                 textColor="neutral.300"
-//                                             >
-//                                                 This is a delicious meal
-//                                             </Typography>
-//                                         </CardOverflow>
-//                                     </Card>
-//                                 </CssVarsProvider>
-//             </Stack>
+export default function ActiveUsers() {
+    return (
+        <div className="active-users-frame">
+            <Container>
+                <Stack className="main" spacing={2}>
+                    <Box className="category-title">
+                        <Typography level="h4">Active User</Typography>
+                    </Box>
+                    <Stack direction="row" spacing={2} className="card-frame">
+                        <CssVarsProvider>
+                            {activeUsers.length !== 0 ? (
+                                activeUsers.map((user, index) => (
+                                    <Card key={index} variant="outlined" sx={{ width: 160 }}>
+                                        <CardOverflow>
+                                            <AspectRatio ratio="1">
+                                                <img
+                                                    src={user.memberImage}
+                                                    alt={user.memberNick}
+                                                    loading="lazy"
+                                                    style={{ borderRadius: "12px" }}
+                                                />
+                                            </AspectRatio>
+                                        </CardOverflow>
+                                        <Typography level="body-md" sx={{ textAlign: "center", mt: -2 }}>
+                                            {user.memberNick}
+                                        </Typography>
+                                    </Card>
+                                ))
+                            ) : (
+                                <Box>No Active Users</Box>
+                            )}
+                        </CssVarsProvider>
+                    </Stack>
+                </Stack>
+            </Container>
+        </div>
+    );
+}
