@@ -1,3 +1,3 @@
 export default function ChosenProduct() {
-return <div></div>
+return <div>Chosen Product</div>
 }

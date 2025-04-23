@@ -3,6 +3,7 @@ import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
 import React from "react";
 import ChosenProduct from "./Chosenproduct";
 import Products from "./Products";
+import "../../../css/products.css"
 
 export default function ProductsPage() {
     const products = useRouteMatch();
@@ -10,13 +11,13 @@ export default function ProductsPage() {
     return (
         <div className="products-page">
             <Switch>
-                <Route path={`${products.path}/:productsId`}>
+                <Route path={`${products.path}/:productId`}>
                     <ChosenProduct></ChosenProduct>
                 </Route>
                 <Route path={`${products.path}`}>
                     <Products />
                 </Route>
             </Switch>
-        </div> >
+        </div> 
     );
 }
