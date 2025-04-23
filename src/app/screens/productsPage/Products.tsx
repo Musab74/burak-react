@@ -16,7 +16,7 @@ const products = [
     { productName: "Kebab", imagePath: "/img/kebab-fresh.webp" },
     { productName: "Kebab", imagePath: "/img/kebab.webp" },
     { productName: "Lavash", imagePath: "/img/lavash.webp" },
-    { productName: "Lavash", imagePath: "/img/lavash-webp" },
+    { productName: "Lavash", imagePath: "/img/lavash.webp" },
     { productName: "Cutlet", imagePath: "/img/cutlet.webp" },
     { productName: "Kebeb", imagePath: "/img/kebab.webp" },
     { productName: "Kebab", imagePath: "/img/kebab-fresh.webp" },
@@ -45,15 +45,17 @@ export default function Products() {
 
                     <Stack className="dishes-filter-section">
                         <Stack className="dishes-filter-box">
-                            <Button variant="contained" color="primary" className="order">
-                                New
-                            </Button>
-                            <Button variant="contained" color="secondary" className="order">
-                                Price
-                            </Button>
-                            <Button variant="contained" color="secondary" className="order">
-                                Views
-                            </Button>
+                            <div className="category-name">
+                                <Button variant="contained" color="primary" className="order">
+                                    New
+                                </Button>
+                                <Button variant="contained" color="secondary" className="order">
+                                    Price
+                                </Button>
+                                <Button variant="contained" color="secondary" className="order">
+                                    Views
+                                </Button>
+                            </div>
                         </Stack>
                     </Stack>
 
@@ -77,6 +79,8 @@ export default function Products() {
                                 </Button>
                             </div>
                         </Stack>
+                    </Stack>
+                
                         <Stack className="product-wrapper">
                             {products.length !== 0 ? (
                                 products.map((products, index) => {
@@ -119,7 +123,7 @@ export default function Products() {
                         </Stack>
                     </Stack>
 
-                    <Stack className="pagition-section" spacing={2}>
+                    <Stack className="pagination-section" spacing={2}>
                         <Pagination
                             count={10}
                             renderItem={(item) => (
@@ -130,7 +134,7 @@ export default function Products() {
                             )}
                         />
                     </Stack>
-                </Stack>
+               
             </Container>
 
             <div className="brands-logo">
@@ -159,8 +163,7 @@ export default function Products() {
                         <Box className="title">Our address</Box>
                         <iframe
                             style={{ marginTop: "60px" }}
-                            src="https://https://www.google.com/maps/dir/''/41.011524,28.95005/@41.0114947,28.8676492,12z/data=!4m8!4m7!1m5!1m1!1s0x14caba27d41bd4bf:0x4fb1d5d4ee986e0a!2m2!1d28.9502916!2d41.0115843!1m0?entry=ttu&g_ep=EgoyMDI1MDQxNi4xIKXMDSoASAFQAw%3D%3D.app.goo.gl/J4vjRL9nzW3sKhL48"
-                            width="1320"
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d26078.425809920423!2d129.06004480000001!3d35.21137005!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x35689386d85735e5%3A0x30705de360d66384!2sGeumgang%20Park!5e0!3m2!1sen!2skr!4v1745417113716!5m2!1sen!2skr"                             
                             height="500"
                             referrerPolicy="no-referrer-when-downgrade"
                         ></iframe>
