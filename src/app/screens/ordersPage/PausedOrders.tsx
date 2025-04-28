@@ -27,7 +27,7 @@ export default function PausedOrders() {
                                                     src="/icons/pause.svg"
                                                     style={{ marginLeft: "15px" }}
                                                 />
-                                                <p>$24</p>
+                                                <p>$18</p>
                                             </Box>
                                         </Box>
                                     );

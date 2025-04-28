@@ -8,7 +8,7 @@ export default function FinishedOrders() {
             <Stack>
                 {[1, null].map((ele, index) => {
                     return (
-                        <Box key={index} className="order-main-box">
+                        <Box key={index} className="order-main-box" style={{ marginRight: "-100px" }}>
                             <Box className="order-box-scroll">
                                 {[1, 2, 3].map((ele2, index2) => {
                                     return (
