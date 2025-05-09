@@ -10,7 +10,7 @@ import FinishedOrders from "./FinishedOrders";
 import "../../../css/orders.css";
 
 export default function OrdersPage() {
-    const [value, setValue] = useState("1");
+    const [value, setValue] = useState("4");
 
     const handleChange = (e: SyntheticEvent, newValue: string) => {
         setValue(newValue);

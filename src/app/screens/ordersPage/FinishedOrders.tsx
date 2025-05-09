@@ -6,7 +6,7 @@ export default function FinishedOrders() {
     return (
         <TabPanel value="3">
             <Stack>
-                {[1, null].map((ele, index) => {
+                {[1, 2].map((ele, index) => {
                     return (
                         <Box key={index} className="order-main-box" style={{ marginRight: "-100px" }}>
                             <Box className="order-box-scroll">
