@@ -1,4 +1,3 @@
-import { ObjectId } from "mongodb";
 import { ProductCollection, ProductSize, ProductStatus } from "../enums/product.enum";
 
 export interface Product {
