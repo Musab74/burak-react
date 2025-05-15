@@ -6,7 +6,7 @@ import ActiveUsers from "./ActiveUsers";
 import Advertisement from "./Advertisement";
 import Events from "./Events";
 import "../../../css/home.css"
-import { setPopularDishes } from "./slice";
+import { setNewDishes, setPopularDishes } from "./slice";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
@@ -18,10 +18,12 @@ import { ProductCollection } from "../../../lib/enums/product.enum";
 /** REDUX SLICE & SELECTOR */
 const actionDispatch = (dispatch: Dispatch) => ({
     setPopularDishes: (data: Product[]) => dispatch(setPopularDishes(data)),
+    setNewDishes: (data:Product[]) => dispatch(setNewDishes(data)),
 });
 
+
 export default function HomePage() {
-    const { setPopularDishes } = actionDispatch(useDispatch());
+    const { setPopularDishes, setNewDishes } = actionDispatch(useDispatch());
 
     useEffect(() => { 
         //Backend data fetch place
@@ -39,6 +41,18 @@ export default function HomePage() {
             setPopularDishes(data);
         })
         .catch((err) =>  { throw err })
+
+        product.getProducts({
+            page:1,
+            limit:4,
+            order:"createdAt",
+            productCollection: ProductCollection.DISH,
+        })
+        .then(data => {
+           setNewDishes(data);
+        })
+        .catch((err) =>  console.log("error",err)
+        )
 
     }, []);
     
