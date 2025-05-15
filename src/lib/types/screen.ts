@@ -4,7 +4,7 @@ import { Product } from "./product";
 // React App State
 
 export interface AppRootState {
-    homePage:HomePageState;
+    homepage:HomePageState;
 }
 export interface HomePageState {
     popularDishes: Product[];

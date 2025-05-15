@@ -13,26 +13,35 @@ import { createSelector } from "reselect";
 import { retrievePopularDishes } from "./selector";
 import { Product } from "../../../lib/types/product";
 import ProductService from "../../services/ProductService";
+import { ProductCollection } from "../../../lib/enums/product.enum";
 
 /** REDUX SLICE & SELECTOR */
 const actionDispatch = (dispatch: Dispatch) => ({
     setPopularDishes: (data: Product[]) => dispatch(setPopularDishes(data)),
 });
 
-const popularDishesRetriever = createSelector(
-    retrievePopularDishes,
-    (popularDishes) => ({ popularDishes })
-);
-
 export default function HomePage() {
     const { setPopularDishes } = actionDispatch(useDispatch());
-    const { popularDishes } = useSelector(popularDishesRetriever);
 
     useEffect(() => { 
         //Backend data fetch place
 
-        const product = new ProductService
+        const product = new ProductService();
+        product.getProducts({
+            page:1,
+            limit:4,
+            order:"productViews",
+            productCollection: ProductCollection.DISH,
+        })
+        .then(data => {
+            console.log("data passed here", data);
+            
+            setPopularDishes(data);
+        })
+        .catch((err) =>  { throw err })
+
     }, []);
+    
 
 
     return <div className={"homepage"}>
