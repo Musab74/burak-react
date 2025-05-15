@@ -1,6 +1,8 @@
+import { Key } from "react";
 import { memberStatus, memberType } from "../enums/member.enum";
 
 export interface Member {
+    _id: Key | null | undefined;
     memberType: memberType;
     memberStatus: memberStatus
     memberNick: string;
