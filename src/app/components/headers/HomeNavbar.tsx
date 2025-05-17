@@ -6,10 +6,14 @@ import { CartItem } from "../../../lib/types/search";
 
 interface HomeNavbarProps {
     cartItems:CartItem[];
+    onAdd: (item:CartItem) => void;
+    onDelete: (item:CartItem) => void;
+    onDeleteAll: () => void;
+    onRemove: (item:CartItem) => void;
 }
 
 export default function HomeNavbar(props:HomeNavbarProps) {
-    const {cartItems} = props
+    const {cartItems, onAdd, onDelete, onDeleteAll, onRemove} = props;
     const AuthMember = null;
     const [count, setstate] = useState<number>(0);
     const [value, setvalue] = useState<boolean>(true)
@@ -60,7 +64,13 @@ export default function HomeNavbar(props:HomeNavbarProps) {
                         </Box>
 
                        
-                        <Basket cartItems={cartItems}/>
+                        <Basket 
+                        cartItems={cartItems}
+                        onAdd={onAdd}
+                        onDelete={onDelete}
+                        onDeleteAll={onDeleteAll}
+                        onRemove={onRemove} 
+                        />
 
                         {!AuthMember ? (<Box><Button variant="contained" className="login-button">Login</Button></Box>) : (
                             <img className="user-avatar"

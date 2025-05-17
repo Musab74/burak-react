@@ -1,8 +1,5 @@
-import React, { useState } from "react";
 
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
-import { RippleBadge } from "./MaterialTheme/styled";
-import { Link, Route, Switch, useLocation } from "react-router-dom";
+import { Route, Switch, useLocation } from "react-router-dom";
 import HomePage from "./screens/homePage";
 import ProductsPage  from "./screens/productsPage";
 import OrdersPage  from "./screens/ordersPage";
@@ -14,37 +11,30 @@ import '../css/app.css';
 import '../css/navbar.css';
 import "../css/footer.css";
 import HelpPage from "./screens/helpPage";
-import Test from "./screens/test";
-import { CartItem } from "../lib/types/search";
+import useBasket from "./hooks/useBasket";
 
 
 function App() {
- const location = useLocation(); // qaytarishi object
- const cartJson: string | null = localStorage.getItem("cartData");
- const currentCart = cartJson ? JSON.parse(cartJson):[];
- const [cartItems,setCartItems] = useState<CartItem[]>(currentCart);
-//HANDLERS
-const onAdd = (input: CartItem) => {
-  const exist:any = cartItems.find((item:CartItem) => item._id === input._id );
-  if(exist){
-    const cartUpdate = cartItems.map((item:CartItem)=>
-       item._id === input._id 
-       ? {...exist, quantity:exist.quantity + 1}
-    : item
-  );
-  setCartItems(cartUpdate);
-  localStorage.setItem("cartData", JSON.stringify(cartUpdate));
-
-  }else{
-    const cartUpdate = [...cartItems, {...input}];
-    setCartItems(cartUpdate);
-    localStorage.setItem("cartData", JSON.stringify(cartUpdate));
-  }
-}
+  const location = useLocation(); // qaytarishi object
+ 
+  const {cartItems, onAdd, onDelete, onDeleteAll, onRemove} = useBasket();
 
   return (
     <div>
-   {location.pathname === "/" ? <HomeNavbar cartItems={cartItems}/> : <OtherNavbar cartItems={cartItems}/>}
+   {location.pathname === "/" ?( <HomeNavbar 
+   cartItems={cartItems} 
+   onAdd = {onAdd}
+   onDelete={onDelete} 
+   onDeleteAll={onDeleteAll}
+   onRemove={onRemove} 
+   /> ) : (
+  <OtherNavbar 
+   cartItems={cartItems} 
+   onDelete={onDelete} 
+   onDeleteAll={onDeleteAll} 
+   onRemove={onRemove}
+   onAdd = {onAdd}
+    />)}
       <Switch>
         <Route path="/products">
           <ProductsPage  onAdd={onAdd} />

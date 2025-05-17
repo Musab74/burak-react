@@ -10,11 +10,10 @@ import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import { FreeMode, Navigation, Thumbs } from "swiper";
-
 import { createSelector, Dispatch } from "@reduxjs/toolkit";
 import { Product } from "../../../lib/types/product";
 import { setChosenProduct, setRestaurant } from "./slice";
-import { retrieveChosenProduct, retrieveProducts, retrieveRestaurant } from "./selector";
+import { retrieveChosenProduct, retrieveRestaurant } from "./selector";
 import { useParams } from "react-router-dom";
 import ProductService from "../../services/ProductService";
 import MemberService from "../../services/memberService";
@@ -61,7 +60,7 @@ export default function ChosenProduct(props:ChosenProductProps) {
 
  }, []);
 
-
+if(!chosenProduct) return null;
   return (
     <div className={"chosen-product"}>
       <Box className={"title"}>Product Detail</Box>
@@ -107,7 +106,18 @@ export default function ChosenProduct(props:ChosenProductProps) {
               <span>${chosenProduct?.productPrice}</span>
             </div>
             <div className={"button-box"}>
-              <Button variant="contained">Add To Basket</Button>
+              <Button variant="contained"
+             onClick={(e) => {
+              onAdd({
+                _id: chosenProduct._id,
+                quantity: 1,
+                name: chosenProduct.productName,
+                price: chosenProduct.productPrice,
+                image: chosenProduct.productImages?.[0] ?? "", // failsafe for image
+              });
+              e.stopPropagation();
+            }}
+              >Add To Basket</Button>
             </div>
           </Box>
         </Stack>
