@@ -64,7 +64,7 @@
 
 .products-page .products .search-area .placeholder {
     width: 160px;
-    height: 10px;
+    height: 30px;
     align-items: flex-start;
     /* padding-left: 10px; */
     flex-direction: row;

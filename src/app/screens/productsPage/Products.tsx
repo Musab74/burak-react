@@ -18,6 +18,7 @@ import { ProductCollection } from "../../../lib/enums/product.enum";
 import { useDispatch, useSelector } from "react-redux";
 import { serverApi } from "../../../lib/config";
 import { useHistory } from "react-router-dom";
+import { CartItem } from "../../../lib/types/search";
 
 /** REDUX SLICE & SELECTOR */
 const actionDispatch = (dispatch: Dispatch) => ({
@@ -28,8 +29,13 @@ const productsRetriever = createSelector(
     (products) => ({ products })
 )
 
+interface ProductsProps {
+    onAdd:(item:CartItem) => void;
+}
 
-export default function Products() {
+
+export default function Products(props:ProductsProps) {
+    const {onAdd} = props
 
     const { setProducts } = actionDispatch(useDispatch());
     const { products } = useSelector(productsRetriever);
@@ -102,7 +108,7 @@ export default function Products() {
                                     className="placeholder"
                                     type="search"
                                     name="singleResearch"
-                                    placeholder="Type Here"
+                                    placeholder="Type here"
 
 
                                     value={searchText}
@@ -116,7 +122,7 @@ export default function Products() {
                                 />
                                 <Box className="btn-box">
                                     <Button className="txt"
-                                        endIcon={<SearchIcon />}
+                                        
                                         onClick={searchProductHandler}
                                     >
                                         SEARCH <SearchIcon className="icon" />
@@ -196,8 +202,19 @@ export default function Products() {
                                             className="product-img"
                                             sx={{ background: `url(${imagePath})` }}
                                         >
-                                            <div className="product-sale">Normal Size</div>
-                                            <Button className="shop-btn">
+                                            <div className="product-sale">{sizeVolume}</div>
+                                            <Button className="shop-btn"
+                                            onClick={(e) => {
+                                                onAdd({
+                                                    _id:product._id,
+                                                    quantity: 1,
+                                                    name:product.productName,
+                                                    price:product.productPrice,
+                                                    image:product.productImages[0],
+                                                });
+                                                e.stopPropagation();
+                                            }}
+                                            >
                                                 <img
                                                     src={"/icons/shopping-cart.svg"}
                                                     style={{ display: "flex" }}

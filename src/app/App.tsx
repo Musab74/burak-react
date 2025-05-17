@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import { RippleBadge } from "./MaterialTheme/styled";
@@ -15,19 +15,39 @@ import '../css/navbar.css';
 import "../css/footer.css";
 import HelpPage from "./screens/helpPage";
 import Test from "./screens/test";
+import { CartItem } from "../lib/types/search";
 
 
 function App() {
  const location = useLocation(); // qaytarishi object
- console.log(location);
- 
+ const cartJson: string | null = localStorage.getItem("cartData");
+ const currentCart = cartJson ? JSON.parse(cartJson):[];
+ const [cartItems,setCartItems] = useState<CartItem[]>(currentCart);
+//HANDLERS
+const onAdd = (input: CartItem) => {
+  const exist:any = cartItems.find((item:CartItem) => item._id === input._id );
+  if(exist){
+    const cartUpdate = cartItems.map((item:CartItem)=>
+       item._id === input._id 
+       ? {...exist, quantity:exist.quantity + 1}
+    : item
+  );
+  setCartItems(cartUpdate);
+  localStorage.setItem("cartData", JSON.stringify(cartUpdate));
+
+  }else{
+    const cartUpdate = [...cartItems, {...input}];
+    setCartItems(cartUpdate);
+    localStorage.setItem("cartData", JSON.stringify(cartUpdate));
+  }
+}
 
   return (
     <div>
-   {location.pathname === "/" ? <HomeNavbar/> : <OtherNavbar/>}
+   {location.pathname === "/" ? <HomeNavbar cartItems={cartItems}/> : <OtherNavbar cartItems={cartItems}/>}
       <Switch>
         <Route path="/products">
-          <ProductsPage />
+          <ProductsPage  onAdd={onAdd} />
         </Route>
         <Route path="/orders">
           <OrdersPage />
