@@ -7,17 +7,27 @@ import UserPage from "./screens/userPage";
 import HomeNavbar  from "./components/headers/HomeNavbar";
 import OtherNavbar from "./components/headers/OtherNavbar";
 import Footer from "./components/footer";
+import HelpPage from "./screens/helpPage";
+import useBasket from "./hooks/useBasket";
+import { useState } from "react";
 import '../css/app.css';
 import '../css/navbar.css';
 import "../css/footer.css";
-import HelpPage from "./screens/helpPage";
-import useBasket from "./hooks/useBasket";
+import AuthenticationModal from "./components/auth";
 
 
 function App() {
   const location = useLocation(); // qaytarishi object
  
   const {cartItems, onAdd, onDelete, onDeleteAll, onRemove} = useBasket();
+  const [signUpOpen, setSignUpOpen] = useState<boolean>(false)
+  const [loginOpen, setLoginOpen] = useState<boolean>(true)
+
+  // Handlers
+
+  const handleSignupClose = () => setSignUpOpen(false)
+  const handleLoginClose = () => setLoginOpen(false)
+  
 
   return (
     <div>
@@ -53,6 +63,14 @@ function App() {
         </Route>
       </Switch>
       <Footer/>
+
+      <AuthenticationModal
+      signupOpen={signUpOpen}
+      loginOpen={loginOpen}
+      handleSignupClose={handleSignupClose}
+      handleLoginClose={handleLoginClose}
+      />
+
     </div>
   )
 }
