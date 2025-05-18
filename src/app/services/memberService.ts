@@ -1,6 +1,6 @@
 import { json } from "stream/consumers";
 import { serverApi } from "../../lib/config";
-import { Member, MemberInput } from "../../lib/types/member";
+import { LoginInput, Member, MemberInput } from "../../lib/types/member";
 import {  ProductInquiry } from "../../lib/types/product";
 import axios from "axios";
 
@@ -44,7 +44,7 @@ class MemberService {
     const member:Member = result.data.member;
 
     localStorage.setItem("memberData", JSON.stringify(member));
-    
+
     return member;
    } catch (err) {
     console.log("error:", err);
@@ -52,6 +52,22 @@ class MemberService {
     
    }
    } 
+
+   public async login(input:LoginInput):Promise<Member> {
+    try {
+     const url = this.path + "/member/login";
+     const result = await axios.post(url, input, {withCredentials:true})
+     const member:Member = result.data.member;
+ 
+     localStorage.setItem("memberData", JSON.stringify(member));
+ 
+     return member;
+    } catch (err) {
+     console.log("error:", err);
+     throw err;
+     
+    }
+    } 
 
 }
 
