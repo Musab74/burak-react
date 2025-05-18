@@ -16,6 +16,19 @@ export interface Member {
     updateAT: string;
 }
 
+export interface MemberInput {
+    memberType?: memberType;
+    memberStatus?: memberStatus
+    memberNick: string;
+    memberPassword: string;
+    memberPhone: string;
+    memberAddress?: string;
+    memberDesc?: string;
+    memberImage?: string;
+    memberPoints?: number;
+
+}
+
 export interface MemberUpdateInput {
     _id: string;
     memberStatus?: memberStatus;

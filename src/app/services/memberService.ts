@@ -1,5 +1,6 @@
+import { json } from "stream/consumers";
 import { serverApi } from "../../lib/config";
-import { Member } from "../../lib/types/member";
+import { Member, MemberInput } from "../../lib/types/member";
 import {  ProductInquiry } from "../../lib/types/product";
 import axios from "axios";
 
@@ -34,7 +35,24 @@ class MemberService {
           console.log("Error, getProduct:", err);
           throw err;
         }
-      }  
+    }
+    
+   public async signup(input:MemberInput):Promise<Member> {
+   try {
+    const url = this.path + "/member/signup";
+    const result = await axios.post(url, input, {withCredentials:true})
+    const member:Member = result.data.member;
+
+    localStorage.setItem("memberData", JSON.stringify(member));
+    
+    return member;
+   } catch (err) {
+    console.log("error:", err);
+    throw err;
+    
+   }
+   } 
+
 }
 
 export default MemberService;

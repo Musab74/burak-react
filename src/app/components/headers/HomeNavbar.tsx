@@ -10,26 +10,17 @@ interface HomeNavbarProps {
     onDelete: (item:CartItem) => void;
     onDeleteAll: () => void;
     onRemove: (item:CartItem) => void;
+    setSignUpOpen: (setSignUpOpen: boolean) => void;
+    setLoginOpen: (setLoginOpen:boolean) => void;
+
 }
 
 export default function HomeNavbar(props:HomeNavbarProps) {
-    const {cartItems, onAdd, onDelete, onDeleteAll, onRemove} = props;
+    const {cartItems, onAdd, onDelete, onDeleteAll, onRemove, setSignUpOpen, setLoginOpen} = props;
     const AuthMember = null;
-    const [count, setstate] = useState<number>(0);
-    const [value, setvalue] = useState<boolean>(true)
-    console.log("componentDidMount"); // DAta fetch jarayonida ishlatiladi
-    useEffect(() => {
-       setstate(count +1)
 
-       return () => {
-        console.log("componentWillUnmount");
-       }
-    }, [value]);
     // Handlers
-    const buttonHandler = () => {
-        setvalue(!value)
-    }
-
+    
     return (
         <div className="home-navbar">
             <Container className="navbar-container">
@@ -72,7 +63,11 @@ export default function HomeNavbar(props:HomeNavbarProps) {
                         onRemove={onRemove} 
                         />
 
-                        {!AuthMember ? (<Box><Button variant="contained" className="login-button">Login</Button></Box>) : (
+                        {!AuthMember ? 
+                        (<Box><Button variant="contained" 
+                        className="login-button"
+                        onClick={() => setLoginOpen(true)}
+                        >Login</Button></Box>) : (
                             <img className="user-avatar"
                                 src={"/icons/default-user.svg"}
                                 aria-haspopup={"true"}
@@ -87,12 +82,13 @@ export default function HomeNavbar(props:HomeNavbarProps) {
                             World's Most Delicious Cousine
                         </Box>
                         <Box className="wel-txt">The Choice, not just a choice</Box>
-                        <Box className="service-txt">{count}  hours service</Box>
+                        <Box className="service-txt">14 hours service</Box>
                         <Box className="signup" ></Box>
                         {!AuthMember ? (
                         <Button variant={"contained"}
                         className="signup-button"
-                        onClick={() => buttonHandler()}>
+                        onClick={() => setSignUpOpen(true)}
+                        >
                             Sign Up</Button>) : null}
                 
                     </Stack>
