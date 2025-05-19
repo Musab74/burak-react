@@ -12,6 +12,7 @@ import { Messages } from "../../../lib/config";
 import { LoginInput, MemberInput } from "../../../lib/types/member";
 import MemberService from "../../services/memberService";
 import { sweetErrorHandling } from "../../../lib/sweetAlert";
+import { useGlobals } from "../../hooks/useGlobals";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -49,6 +50,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
   const [memberNick, setMemberNick] = useState<string>("");
   const [memberPhone, setMemberPhone] = useState<string>("");
   const [memberPassword, setMemberPassword] = useState<string>("");
+  const {authMember, setAuthMember} = useGlobals();
 
   /** HANDLERS **/
 
@@ -86,7 +88,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
         const result = await member.signup(signUpInput);
        
        //Context Authetication
-       
+       setAuthMember(result);
         handleSignupClose();
       } catch (err) {
       console.log("error",err);
@@ -107,7 +109,9 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
         };
 
         const member = new MemberService();
+        console.log("login data:",member.login)
         const result = await member.login(loginInput);
+        setAuthMember(result);
         handleLoginClose();
 
 
@@ -115,7 +119,6 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
       console.log("error",err);
       handleLoginClose();
       sweetErrorHandling(err).then();
-      
     }
   }
 
@@ -210,7 +213,9 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                 label="username"
                 variant="outlined"
                 sx={{ my: "10px" }}
+                onChange={handleUsername} 
               />
+
               <TextField
                 id={"outlined-basic"}
                 label={"password"}

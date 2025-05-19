@@ -14,19 +14,47 @@ import '../css/app.css';
 import '../css/navbar.css';
 import "../css/footer.css";
 import AuthenticationModal from "./components/auth";
+import { T } from "../lib/types/common";
+import { sweetErrorHandling, sweetTopSuccessAlert } from "../lib/sweetAlert";
+import { Messages } from "../lib/config";
+import MemberService from "./services/memberService";
+import { useGlobals } from "./hooks/useGlobals";
 
 
 function App() {
   const location = useLocation(); // qaytarishi object
- 
+  const {setAuthMember} = useGlobals();
   const {cartItems, onAdd, onDelete, onDeleteAll, onRemove} = useBasket();
   const [signUpOpen, setSignUpOpen] = useState<boolean>(false)
   const [loginOpen, setLoginOpen] = useState<boolean>(false)
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
 
   // Handlers
 
   const handleSignupClose = () => setSignUpOpen(false)
   const handleLoginClose = () => setLoginOpen(false)
+
+  const handleLogoutClick= (e:React.MouseEvent<HTMLElement>) => {
+     setAnchorEl(e.currentTarget);
+  }
+
+  const handleCloseLogout = () => {
+    setAnchorEl(null);
+ }
+ const handleLogoutRequest= async () =>  {
+  try {
+    const member = new MemberService();
+    await member.logout();
+    await sweetTopSuccessAlert("Succes", 700)
+    setAuthMember(null);
+  } catch (err) {
+    console.log("error",err);
+    sweetErrorHandling(Messages.error1)
+    
+  }
+}
+
+ 
   
 
   return (
@@ -39,6 +67,10 @@ function App() {
    onRemove={onRemove} 
    setSignUpOpen={setSignUpOpen}
    setLoginOpen={setLoginOpen}
+   anchorEl={anchorEl}
+   handleLogoutClick={handleLogoutClick}
+   handleCloseLogout={handleCloseLogout}
+   handleLogoutRequest = {handleLogoutRequest}
    /> ) : (
   <OtherNavbar 
    cartItems={cartItems} 
@@ -48,6 +80,10 @@ function App() {
    onAdd = {onAdd}
    setLoginOpen={setLoginOpen}
    setSignUpOpen={setSignUpOpen}
+   anchorEl={anchorEl}
+   handleLogoutClick={handleLogoutClick}
+   handleCloseLogout={handleCloseLogout}
+   handleLogoutRequest = {handleLogoutRequest}
     />)}
       <Switch>
         <Route path="/products">

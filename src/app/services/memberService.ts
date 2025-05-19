@@ -1,73 +1,83 @@
 import { json } from "stream/consumers";
 import { serverApi } from "../../lib/config";
 import { LoginInput, Member, MemberInput } from "../../lib/types/member";
-import {  ProductInquiry } from "../../lib/types/product";
+import { ProductInquiry } from "../../lib/types/product";
 import axios from "axios";
 
 class MemberService {
-    private readonly path:string;
-    constructor() {
-        this.path = serverApi
-    }
+  private readonly path: string;
+  constructor() {
+    this.path = serverApi
+  }
 
-    public async getTopUsers(): Promise<Member[]> {
-        try {
-          const url = this.path + "/member/top-users";
-          const result = await axios.get(url);
-          console.log("getTopUsers", result);
-          
-          return result.data
-        } catch (err) {
-          console.log("Error, getProduct:", err);
-          throw err;
-        }
-      }
-    
-    public async getRestaurant(): Promise<Member> {
-        try {
-          const url = this.path + "/member/restaurant";
-          const result = await axios.get(url);
-          console.log("getTopUsers", result);
-          
-          
-          return result.data
-        } catch (err) {
-          console.log("Error, getProduct:", err);
-          throw err;
-        }
-    }
-    
-   public async signup(input:MemberInput):Promise<Member> {
-   try {
-    const url = this.path + "/member/signup";
-    const result = await axios.post(url, input, {withCredentials:true})
-    const member:Member = result.data.member;
-
-    localStorage.setItem("memberData", JSON.stringify(member));
-
-    return member;
-   } catch (err) {
-    console.log("error:", err);
-    throw err;
-    
-   }
-   } 
-
-   public async login(input:LoginInput):Promise<Member> {
+  public async getTopUsers(): Promise<Member[]> {
     try {
-     const url = this.path + "/member/login";
-     const result = await axios.post(url, input, {withCredentials:true})
-     const member:Member = result.data.member;
- 
-     localStorage.setItem("memberData", JSON.stringify(member));
- 
-     return member;
+      const url = this.path + "/member/top-users";
+      const result = await axios.get(url);
+      console.log("getTopUsers", result);
+
+      return result.data
     } catch (err) {
-     console.log("error:", err);
-     throw err;
-     
+      console.log("Error, getProduct:", err);
+      throw err;
     }
-    } 
+  }
+
+  public async getRestaurant(): Promise<Member> {
+    try {
+      const url = this.path + "/member/restaurant";
+      const result = await axios.get(url);
+      console.log("getTopUsers", result);
+
+
+      return result.data
+    } catch (err) {
+      console.log("Error, getProduct:", err);
+      throw err;
+    }
+  }
+
+  public async signup(input: MemberInput): Promise<Member> {
+    try {
+      const url = this.path + "/member/signup";
+      const result = await axios.post(url, input, { withCredentials: true })
+      const member: Member = result.data.member;
+
+      localStorage.setItem("memberData", JSON.stringify(member));
+
+      return member;
+    } catch (err) {
+      console.log("error:", err);
+      throw err;
+
+    }
+  }
+
+  public async login(input: LoginInput): Promise<Member> {
+    try {
+      const url = this.path + "/member/login";
+      const result = await axios.post(url, input, { withCredentials: true })
+      const member: Member = result.data.member;
+      localStorage.setItem("memberData", JSON.stringify(member));
+
+      return member;
+    } catch (err) {
+      console.log("error:", err);
+      throw err;
+
+    }
+  }
+  public async logout () :Promise<boolean> {
+    try {
+      const url = this.path + "/member/logout";
+      const result = await axios.post(url, {},{ withCredentials: true })
+      localStorage.removeItem("memberData");
+      return result.data.logout;
+
+    } catch (err) {
+      throw err;
+    }
+  }
 
 }
 

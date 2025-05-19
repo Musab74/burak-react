@@ -1,26 +1,36 @@
-import { Box, Button, Container, Stack } from "@mui/material";
+import { Box, Button, Container, ListItemIcon, Menu, MenuItem, Stack } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import Basket from "./Basket";
 import { useEffect, useState } from "react";
 import { CartItem } from "../../../lib/types/search";
+import { useGlobals } from "../../hooks/useGlobals";
+import { serverApi } from "../../../lib/config";
+import { Logout } from "@mui/icons-material";
 
 interface HomeNavbarProps {
-    cartItems:CartItem[];
-    onAdd: (item:CartItem) => void;
-    onDelete: (item:CartItem) => void;
+    cartItems: CartItem[];
+    onAdd: (item: CartItem) => void;
+    onDelete: (item: CartItem) => void;
     onDeleteAll: () => void;
-    onRemove: (item:CartItem) => void;
+    onRemove: (item: CartItem) => void;
     setSignUpOpen: (setSignUpOpen: boolean) => void;
-    setLoginOpen: (setLoginOpen:boolean) => void;
+    setLoginOpen: (setLoginOpen: boolean) => void;
+    handleLogoutClick:(e:React.MouseEvent<HTMLElement>) => void;
+    anchorEl: HTMLElement | null;
+    handleCloseLogout:() => void;
+    handleLogoutRequest:()=>void;
 
 }
 
-export default function HomeNavbar(props:HomeNavbarProps) {
-    const {cartItems, onAdd, onDelete, onDeleteAll, onRemove, setSignUpOpen, setLoginOpen} = props;
-    const AuthMember = null;
+export default function HomeNavbar(props: HomeNavbarProps) {
+    const { cartItems, onAdd, onDelete, onDeleteAll, onRemove, 
+        handleCloseLogout, handleLogoutClick, anchorEl,handleLogoutRequest,
+        setSignUpOpen, setLoginOpen } = props;
 
+
+    const { authMember } = useGlobals();
     // Handlers
-    
+
     return (
         <div className="home-navbar">
             <Container className="navbar-container">
@@ -40,12 +50,12 @@ export default function HomeNavbar(props:HomeNavbarProps) {
                         <Box className={"hover-line"}>
                             <NavLink to="/products" activeClassName={"underline"}>Products</NavLink>
                         </Box>
-                        {AuthMember ? (
+                        {authMember ? (
                             <Box className={"hover-line"}>
                                 <NavLink to="/orders" activeClassName={"underline"}>Orders</NavLink>
                             </Box>
                         ) : null}
-                        {AuthMember ? (
+                        {authMember ? (
                             <Box className={"hover-line"}>
                                 <NavLink to="/member-page" activeClassName={"underline"}>My Page</NavLink>
                             </Box>
@@ -54,25 +64,73 @@ export default function HomeNavbar(props:HomeNavbarProps) {
                             <NavLink to="/help" activeClassName={"underline"}>Help</NavLink>
                         </Box>
 
-                       
-                        <Basket 
-                        cartItems={cartItems}
-                        onAdd={onAdd}
-                        onDelete={onDelete}
-                        onDeleteAll={onDeleteAll}
-                        onRemove={onRemove} 
+
+                        <Basket
+                            cartItems={cartItems}
+                            onAdd={onAdd}
+                            onDelete={onDelete}
+                            onDeleteAll={onDeleteAll}
+                            onRemove={onRemove}
                         />
 
-                        {!AuthMember ? 
-                        (<Box><Button variant="contained" 
-                        className="login-button"
-                        onClick={() => setLoginOpen(true)}
-                        >Login</Button></Box>) : (
-                            <img className="user-avatar"
-                                src={"/icons/default-user.svg"}
-                                aria-haspopup={"true"}
-                            />
-                        )}
+                        {!authMember ?
+                            (<Box><Button variant="contained"
+                                className="login-button"
+                                onClick={() => setLoginOpen(true)}
+                            >Login</Button></Box>) : (
+                                <img className="user-avatar"
+                                    src={authMember?.memberImage ? `${serverApi}/${authMember?.memberImage}` :
+                                        "/icons/default-user.svg"}
+                                    aria-haspopup={"true"}
+                                    onClick={handleLogoutClick}
+                                />
+                            )}
+
+                        <Menu
+                            anchorEl={anchorEl}
+                            id="account-menu"
+                            open={Boolean(anchorEl)}
+                            onClick={handleCloseLogout}
+                            onClose={handleCloseLogout}
+                            PaperProps={{
+                                elevation: 0,
+                                sx: {
+                                    overflow: 'visible',
+                                    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                                    mt: 1.5,
+                                    '& .MuiAvatar-root': {
+                                        width: 32,
+                                        height: 32,
+                                        ml: -0.5,
+                                        mr: 1,
+                                    },
+                                    '&:before': {
+                                        content: '""',
+                                        display: 'block',
+                                        position: 'absolute',
+                                        top: 0,
+                                        right: 14,
+                                        width: 10,
+                                        height: 10,
+                                        bgcolor: 'background.paper',
+                                        transform: 'translateY(-50%) rotate(45deg)',
+                                        zIndex: 0,
+                                    },
+                                },
+                            }}
+                            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}                        >
+                            <MenuItem
+                            onClick={handleLogoutRequest}
+                            
+                            >
+                                <ListItemIcon>
+                                    <Logout fontSize="small" style={{ color: 'blue' }} />
+                                </ListItemIcon>
+                                Logout
+                            </MenuItem>
+                        </Menu>
+
 
                     </Stack>
                 </Stack>
@@ -84,13 +142,13 @@ export default function HomeNavbar(props:HomeNavbarProps) {
                         <Box className="wel-txt">The Choice, not just a choice</Box>
                         <Box className="service-txt">14 hours service</Box>
                         <Box className="signup" ></Box>
-                        {!AuthMember ? (
-                        <Button variant={"contained"}
-                        className="signup-button"
-                        onClick={() => setSignUpOpen(true)}
-                        >
-                            Sign Up</Button>) : null}
-                
+                        {!authMember ? (
+                            <Button variant={"contained"}
+                                className="signup-button"
+                                onClick={() => setSignUpOpen(true)}
+                            >
+                                Sign Up</Button>) : null}
+
                     </Stack>
                     <Box className="logo-frame">
                         <div className="logo-img"></div>
