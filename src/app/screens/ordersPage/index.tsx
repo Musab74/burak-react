@@ -1,4 +1,4 @@
-import { useState, SyntheticEvent } from "react";
+import { useState, SyntheticEvent,  } from "react";
 import { Container, Stack, Box } from "@mui/joy";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -8,8 +8,25 @@ import PausedOrders from "./PausedOrders";
 import ProcessOrders from "./ProcessOrders";
 import FinishedOrders from "./FinishedOrders";
 import "../../../css/orders.css";
+import { Dispatch } from "@reduxjs/toolkit";
+import { setFinishedOrders, setPausedOrders, setProcessOrders } from "./slice";
+import { useDispatch } from "react-redux";
+import { Order } from "../../../lib/types/orders";
+
+
+/** REDUX SLICE & SELECTOR */
+const actionDispatch = (dispatch: Dispatch) => ({
+        setPausedOrders: (data: Order[]) => dispatch(setPausedOrders(data)),
+        setProcessOrders: (data: Order[]) => dispatch(setProcessOrders(data)),
+        setFinishedOrders: (data: Order[]) => dispatch(setFinishedOrders(data)),
+      });
+      
+
+
 
 export default function OrdersPage() {
+    const {setPausedOrders, setProcessOrders, setFinishedOrders} = 
+    actionDispatch(useDispatch());
     const [value, setValue] = useState("4");
 
     const handleChange = (e: SyntheticEvent, newValue: string) => {

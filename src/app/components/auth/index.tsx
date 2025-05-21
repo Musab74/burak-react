@@ -118,7 +118,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
       } catch (err) {
       console.log("error",err);
       handleLoginClose();
-      sweetErrorHandling(err).then();
+      sweetErrorHandling(Messages.error1).then();
     }
   }
 

@@ -61,12 +61,14 @@ class MemberService {
       localStorage.setItem("memberData", JSON.stringify(member));
 
       return member;
+      
     } catch (err) {
       console.log("error:", err);
       throw err;
 
     }
   }
+
   public async logout () :Promise<boolean> {
     try {
       const url = this.path + "/member/logout";

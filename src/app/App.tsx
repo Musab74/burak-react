@@ -49,13 +49,10 @@ function App() {
     setAuthMember(null);
   } catch (err) {
     console.log("error",err);
-    sweetErrorHandling(Messages.error1)
+    sweetErrorHandling(Messages.error1).then();
     
   }
 }
-
- 
-  
 
   return (
     <div>
