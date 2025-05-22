@@ -7,7 +7,7 @@ import { Product } from "./product";
 export interface AppRootState {
     homepage:HomePageState;
     productPage: ProductPageState;
-    ordersPAge: OrdersPageState;
+    ordersPage: OrdersPageState;
 }
 //HOMEPAGE
 export interface HomePageState {

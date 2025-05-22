@@ -3,8 +3,8 @@ import { Product } from "./product";
 
 export interface OrderItem {
     _id: string;
-    itemQuantity:Number;
-    itemPrice: Number;
+    itemQuantity:number;
+    itemPrice: number;
     orderId: string;
     productId: string;
     createAt:Date;
