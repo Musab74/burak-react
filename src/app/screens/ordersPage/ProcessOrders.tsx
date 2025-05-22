@@ -6,19 +6,55 @@ import moment from "moment";
 import { retrieveProcessOrders, } from "./selector";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
-import { Order, OrderItem } from "../../../lib/types/orders";
-import { serverApi } from "../../../lib/config";
+import { Order, OrderItem, OrderUpdateInput } from "../../../lib/types/orders";
+import { Messages, serverApi } from "../../../lib/config";
 import { Product } from "../../../lib/types/product";
+import { useGlobals } from "../../hooks/useGlobals";
+import { T } from "../../../lib/types/common";
+import { OrderStatus } from "../../../lib/enums/order.enum";
+import OrderService from "../../services/ordersService";
+import { sweetErrorHandling } from "../../../lib/sweetAlert";
 
 /** REDUX SLICE & SELECTOR */
 const processOrdersRetriever = createSelector(
     retrieveProcessOrders,
     (processOrders) => ({ processOrders })
 );
+ 
+interface ProcessOrderProps {
+    setValue: (input:string) => void;
+}
 
-export default function ProcessOrders() {
+export default function ProcessOrders(props:ProcessOrderProps) {
 
     const { processOrders } = useSelector(processOrdersRetriever);
+    const {setValue} = props;
+    const {authMember, setOrderBuilder} = useGlobals();
+
+    //Handlers
+    const finishOrderHandler = async (e:T) => {
+        try {
+            if(!authMember ) throw Error(Messages.error2)
+
+            const orderId = e.target.value;
+            const input:OrderUpdateInput = {
+                orderId: orderId,
+                orderStatus:OrderStatus.FINISH,
+            };
+        
+            const confirmation = window.confirm("I confirm recieved order");
+            if(confirmation) {
+                const order = new OrderService();
+                await order.updateOrder(input);
+
+                setValue("3")
+                setOrderBuilder(new Date());
+            }
+        } catch (err) {
+            sweetErrorHandling(err).then();
+        }}
+    
+
     return (
         <TabPanel value={"2"}>
             <Stack>
@@ -65,7 +101,10 @@ export default function ProcessOrders() {
                                 <p className="data-compl">
                                     {moment().format("YY-MM-DD HH:mm")}
                                 </p>
-                                <Button variant="contained" className="verify-button">
+                                <Button variant="contained" className="verify-button"
+                                value = {order._id}
+                                onClick={finishOrderHandler}
+                                >
                                     Verify to Fulfil
                                 </Button>
                             </Box>

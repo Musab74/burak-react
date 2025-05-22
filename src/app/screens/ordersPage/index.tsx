@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { Order, OrderInquiry } from "../../../lib/types/orders";
 import { OrderStatus } from "../../../lib/enums/order.enum";
 import OrderService from "../../services/ordersService";
+import { useGlobals } from "../../hooks/useGlobals";
 
 
 /** REDUX SLICE & SELECTOR */
@@ -29,7 +30,8 @@ const actionDispatch = (dispatch: Dispatch) => ({
 export default function OrdersPage() {
     const {setPausedOrders, setProcessOrders, setFinishedOrders} = 
     actionDispatch(useDispatch());
-    const [value, setValue] = useState("4");
+    const [value, setValue] = useState("1");
+    const {orderBuilder} = useGlobals();
     const [orderInquiry, setOrderInquiry] = useState<OrderInquiry>({
         page:1,
         limit:5,
@@ -42,14 +44,14 @@ export default function OrdersPage() {
       .then(data => setPausedOrders(data))
       .catch((err) => console.log(err));
 
-      order.getMyOrders({...orderInquiry, orderStatus: OrderStatus.PAUSE})
-      .then(data => setPausedOrders(data))
+      order.getMyOrders({...orderInquiry, orderStatus: OrderStatus.PROCESS})
+      .then(data => setProcessOrders(data))
       .catch((err) => console.log(err));
 
-      order.getMyOrders({...orderInquiry, orderStatus: OrderStatus.PAUSE})
-      .then(data => setPausedOrders(data))
+      order.getMyOrders({...orderInquiry, orderStatus: OrderStatus.FINISH})
+      .then(data => setFinishedOrders(data))
       .catch((err) => console.log(err));
-    }, [orderInquiry]);
+    }, [orderInquiry, orderBuilder]);
 
     const handleChange = (e: SyntheticEvent, newValue: string) => {
         setValue(newValue);
@@ -75,8 +77,8 @@ export default function OrdersPage() {
                             </Box>
                         </Box>
                         <Stack className="order-main-content">
-                            <PausedOrders />
-                            <ProcessOrders />
+                            <PausedOrders setValue={setValue} />
+                            <ProcessOrders setValue={setValue} />
                             <FinishedOrders />
                         </Stack>
                     </TabContext>
