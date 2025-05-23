@@ -115,6 +115,8 @@
 .user-page .order-info-box .order-user-icon-box {
 	position: absolute;
 	padding: 5px;
+	margin-top: 50px;
+	margin-right: -30px;
 	width: 37px;
 	height: 37px;
 	top: 81%;
@@ -125,7 +127,7 @@
 }
 
 .user-page .order-info-box .order-user-name {
-	margin-top: 10px;
+	margin-top: 60px;
 	font-family: 'Commissioner';
 	font-style: normal;
 	font-weight: 500;

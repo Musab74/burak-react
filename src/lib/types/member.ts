@@ -30,7 +30,6 @@ export interface MemberInput {
 }
 
 export interface MemberUpdateInput {
-    _id: string;
     memberStatus?: memberStatus;
     memberNick?: string;
     memberPhone?: string;
@@ -38,8 +37,6 @@ export interface MemberUpdateInput {
     memberDesc?: string;
     memberImage?: string;
     memberPoints?: number;
-    createAt: Date;
-    updateAT: string;
 }
 
 export interface LoginInput{
